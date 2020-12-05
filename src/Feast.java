@@ -22,17 +22,16 @@ class Pot {
     }
 
     public void getServing() throws InterruptedException {
-        emptyPot.acquire();
-        removeServing();
-        emptyPot.release();
-
-
+        available.acquire();
+        if (removeServing() == 0) {
+            emptyPot.release();
+        }
     }
 
     public void fill() throws InterruptedException {
-        available.acquire();
+        emptyPot.acquire();
         insertServings(M);
-        available.release();
+        available.release(M);
     }
 }
 
